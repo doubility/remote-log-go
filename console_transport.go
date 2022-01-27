@@ -3,6 +3,7 @@ package remote_log_go
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 type ConsoleTransport struct {
@@ -55,5 +56,15 @@ func (c *ConsoleTransport) log(log *LogInfo) {
  * @return {*}
  */
 func formatConsole(log *LogInfo) string {
-	return fmt.Sprintf("%v %v %v %v %v", log.LogTime, log.Level, log.ServiceName, log.AppName, log.Message)
+	var s strings.Builder
+	s.WriteString(log.LogTime)
+	s.WriteString(" ")
+	s.WriteString(log.Level)
+	s.WriteString(" ")
+	s.WriteString(log.ServiceName)
+	s.WriteString(" ")
+	s.WriteString(log.AppName)
+	s.WriteString(" ")
+	s.WriteString(log.Message)
+	return s.String()
 }

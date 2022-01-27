@@ -44,11 +44,11 @@ func TestOne(t *testing.T) {
 	consoleTransport := NewConsoleTransport(Debug)
 	log := NewLogger("go_app", 40, httpTransport, consoleTransport)
 
-	// err := log.Init()
+	err := log.Init()
 
-	// if err != nil {
-	// 	t.Errorf("初始化错误:%v", err.Error())
-	// }
+	if err != nil {
+		t.Errorf("初始化错误:%v", err.Error())
+	}
 
 	log.Info("go消息测试2")
 
