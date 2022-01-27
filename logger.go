@@ -123,20 +123,20 @@ func (l *Logger) log(level Level, message string) {
 	for _, item := range l.transport {
 		switch v := item.(type) {
 		case *HttpTransport:
-			if v.ShouldLog(level) {
+			if v.shouldLog(level) {
 				isLog = true
-				v.Log(logInfo)
+				v.log(logInfo)
 			}
 		case *ConsoleTransport:
-			if v.ShouldLog(level) {
+			if v.shouldLog(level) {
 				isLog = true
-				v.Log(logInfo)
+				v.log(logInfo)
 			}
 		}
 	}
 
 	if !isLog {
 		consoleTransport := NewConsoleTransport()
-		consoleTransport.Log(logInfo)
+		consoleTransport.log(logInfo)
 	}
 }

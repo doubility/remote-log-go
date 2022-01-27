@@ -94,7 +94,7 @@ func (h *HttpTransport) SetMaxBufferSize(size int64) {
  * @param {Level} level
  * @return {*}
  */
-func (h *HttpTransport) ShouldLog(level Level) bool {
+func (h *HttpTransport) shouldLog(level Level) bool {
 	for _, v := range h.allowLevel {
 		if v == level {
 			return true
@@ -109,7 +109,7 @@ func (h *HttpTransport) ShouldLog(level Level) bool {
  * @param {*LogInfo} log
  * @return {*}
  */
-func (h *HttpTransport) Log(log *LogInfo) {
+func (h *HttpTransport) log(log *LogInfo) {
 	logStr := formatHttp(log)
 	h.bufferChan <- logStr
 }

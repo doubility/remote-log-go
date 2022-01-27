@@ -25,7 +25,7 @@ func NewConsoleTransport(allowLevel ...Level) *ConsoleTransport {
  * @param {Level} level
  * @return {*}
  */
-func (c *ConsoleTransport) ShouldLog(level Level) bool {
+func (c *ConsoleTransport) shouldLog(level Level) bool {
 	for _, v := range c.allowLevel {
 		if v == level {
 			return true
@@ -40,7 +40,7 @@ func (c *ConsoleTransport) ShouldLog(level Level) bool {
  * @param {*LogInfo} log
  * @return {*}
  */
-func (c *ConsoleTransport) Log(log *LogInfo) {
+func (c *ConsoleTransport) log(log *LogInfo) {
 	logStr := formatConsole(log)
 	if log.Level == string(Error) {
 		fmt.Fprintln(os.Stderr, logStr)
