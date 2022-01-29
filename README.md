@@ -12,15 +12,17 @@ go get -u github.com/doubility/remote-log-go
 
 可拷贝 examples 中的例子
 
-logger/logger.go (根据情况替换 [应用名称])
-
 **重点：Logger 申明为全局变量，初始化一次！！！**
+
+logger/logger.go (根据情况替换 [应用名称])
 
 ```go
 package logger
 
 import (
-    remote_log_go "github.com/doubility/remote-log-go"
+	"log"
+
+	remote_log_go "github.com/doubility/remote-log-go"
 )
 
 var Logger *remote_log_go.Logger
