@@ -37,12 +37,12 @@ func NewLogger(appName string, storageDays int32, transport ...interface{}) *Log
 		panic(errors.New("invalid env REMOTE_LOG_API_URL"))
 	}
 
-	goPath := os.Getenv("GO_APP_DATA")
+	goPath := os.Getenv("NODE_APP_DATA")
 	if goPath != "" {
 		ErrorLogPath = fmt.Sprintf("%v/%v/remote_logs", goPath, appName)
 		os.MkdirAll(ErrorLogPath, os.ModePerm)
 	} else {
-		panic(errors.New("invalid env GO_APP_DATA"))
+		panic(errors.New("invalid env NODE_APP_DATA"))
 	}
 
 	return &Logger{
