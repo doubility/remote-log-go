@@ -131,17 +131,17 @@ func (h *HttpTransport) flush() {
 		if h.bufferLength > 1000 {
 			bytesData, err := json.Marshal(arrStrBufferLog)
 			if err != nil {
-				sendLog(1, arrStrBufferLog, "")
+				sendLog(1, arrStrBufferLog, "", 0)
 			}
 			strLog, err := doZlibCompress(bytesData)
 			if err != nil {
-				sendLog(1, arrStrBufferLog, "")
+				sendLog(1, arrStrBufferLog, "", 0)
 			} else {
-				sendLog(2, []string{}, strLog)
+				sendLog(2, []string{}, strLog, 0)
 			}
 
 		} else {
-			sendLog(1, arrStrBufferLog, "")
+			sendLog(1, arrStrBufferLog, "", 0)
 		}
 
 		h.bufferLog = h.bufferLog[:0]
@@ -150,24 +150,33 @@ func (h *HttpTransport) flush() {
 }
 
 /**
- * @description: 请求接口 上传日志
+ * @description: 请求接口 上传日志 失败重试3次
  * @param {int32} _type
  * @param {[]string} data1
  * @param {string} data2
  * @return {*}
  */
-func sendLog(_type int32, data1 []string, data2 string) {
+func sendLog(_type int32, data1 []string, data2 string, tryNum int32) {
 	defer func() {
 		if err := recover(); err != nil {
-			data := make(map[string]interface{})
-			data["type"] = _type
-			data["data1"] = data1
-			data["data2"] = data2
-			bytesData, _ := json.Marshal(data)
+			if tryNum >= 3 {
+				data := make(map[string]interface{})
+				data["type"] = _type
+				data["data1"] = data1
+				data["data2"] = data2
+				bytesData, _ := json.Marshal(data)
 
-			httpErrorLog(string(bytesData))
+				httpErrorLog(string(bytesData))
 
-			fmt.Println(err)
+				fmt.Println(err)
+			} else {
+				go func() {
+					time.Sleep(time.Second)
+					tryNum++
+					sendLog(_type, data1, data2, tryNum)
+				}()
+			}
+
 		}
 	}()
 
